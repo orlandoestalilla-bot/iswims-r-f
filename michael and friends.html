@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Michael and Friends</title>
+<style>
+:root{color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f0f2f5;--card:#fff;--soft:#f1f5f9;--line:#e2e8f0;--tx:#0f172a;--mut:#64748b;--blue:#0084ff;--red:#ef4444;--amb:#f59e0b;--grn:#10b981;--bub:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#18191a;--card:#242526;--soft:#3a3b3c;--line:#3e4042;--tx:#e4e6eb;--mut:#a0a4ab;--bub:#3a3b3c}}
+:root[data-theme="dark"]{--bg:#18191a;--card:#242526;--soft:#3a3b3c;--line:#3e4042;--tx:#e4e6eb;--mut:#a0a4ab;--bub:#3a3b3c}
+*,*:before,*:after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font:14px/1.45 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;flex-direction:column;overflow:hidden}
+button,input,select{font:inherit;color:inherit}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:17px;margin:0}header small{color:var(--mut);display:block;font-size:12px}
+.logo{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#6366f1);display:grid;place-items:center;font-size:19px}
+.counters{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+.chip{border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;display:flex;gap:6px;align-items:center;background:var(--soft)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:999px;padding:8px 14px;font-weight:600;cursor:pointer}
+.btn:hover{filter:brightness(.92)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:var(--soft);color:var(--tx)}
+.wrap{flex:1;display:flex;min-height:0}
+aside{width:340px;background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;flex-shrink:0}
+.tools{padding:10px;border-bottom:1px solid var(--line);display:grid;gap:8px}
+input[type=text],input[type=datetime-local],select{width:100%;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:8px 12px;outline:none}
+input:focus,select:focus{border-color:var(--blue)}
+.pills{display:flex;gap:6px;overflow-x:auto}
+.pill{border:0;background:var(--soft);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.pill.on{background:var(--blue);color:#fff}
+#list{flex:1;overflow-y:auto}
+.item{display:flex;gap:10px;padding:12px;border-left:4px solid transparent;border-bottom:1px solid var(--line);cursor:pointer}
+.item:hover{background:var(--soft)}.item.sel{background:var(--soft);border-left-color:var(--blue)}
+.av{width:42px;height:42px;border-radius:50%;background:var(--soft);display:grid;place-items:center;position:relative;flex-shrink:0}
+.item.sel .av{background:var(--card)}
+.av i{position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;border:2px solid var(--card)}
+.item .m{min-width:0;flex:1}.item b,.item p{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0}
+.item p{color:var(--mut);font-size:12px}.item .top{display:flex;justify-content:space-between;gap:6px}
+.tag{display:inline-block;border-radius:999px;padding:1px 8px;font-size:10px;font-weight:700;color:#fff;margin-top:4px}
+main{flex:1;display:flex;flex-direction:column;min-width:0}
+.banner{padding:10px 16px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.banner small{opacity:.85;display:block}
+.banner button{background:#fff;color:#111;border:0;border-radius:999px;padding:7px 14px;font-weight:700;cursor:pointer}
+.banner button:disabled{opacity:.6;cursor:not-allowed}
+.head{background:var(--card);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.head h2{margin:0;font-size:20px}.mut{color:var(--mut);font-size:12px}
+.metas{display:flex;gap:10px;flex-wrap:wrap}.meta{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:6px 10px;min-width:150px}
+.meta span{display:block;font-size:10px;text-transform:uppercase;font-weight:700;color:var(--mut)}
+.meta select{padding:2px 4px;background:transparent;border:0;font-weight:700}
+.body{flex:1;display:grid;grid-template-columns:5fr 7fr;min-height:0}
+.left{background:var(--card);border-right:1px solid var(--line);padding:16px;overflow-y:auto;display:grid;gap:14px;align-content:start}
+.box{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:12px}
+.box h4{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 10px;margin-bottom:6px;font-size:13px}
+.badge{border:0;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700;cursor:pointer;color:#fff}
+.addp{display:flex;gap:6px}.addp input{flex:1}
+label.chk{display:flex;gap:8px;align-items:center;padding:3px 0;cursor:pointer}
+.err{color:var(--red);font-size:12px;margin-top:6px}
+.chat{display:flex;flex-direction:column;min-height:0;background:var(--bg)}
+.chat .hd{background:var(--card);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;justify-content:space-between;font-weight:700}
+#stream{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{display:flex;flex-direction:column;align-items:flex-start}.msg.tech{align-items:flex-end}
+.msg .who{font-size:12px;padding:0 4px 3px}.msg .who span{color:var(--mut);font-size:10px;margin-left:6px}
+.bub{max-width:420px;padding:8px 14px;border-radius:18px;background:var(--bub);border:1px solid var(--line);border-top-left-radius:4px;overflow-wrap:anywhere}
+.msg.tech .bub{background:var(--blue);color:#fff;border-color:var(--blue);border-top-left-radius:18px;border-top-right-radius:4px}
+.sys{align-self:center;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:11px;color:var(--mut);text-align:center}
+.send{display:flex;gap:8px;padding:10px;background:var(--card);border-top:1px solid var(--line)}
+.pk{margin-top:2px;width:18px;height:18px;flex-shrink:0;accent-color:var(--blue);cursor:pointer}.bar{padding:8px 10px;border-bottom:1px solid var(--line);display:none;gap:8px;align-items:center;flex-wrap:wrap;background:var(--soft)}.bar.on{display:flex}.bar span{flex:1;font-size:12px;font-weight:600}.bar .btn{padding:6px 12px;font-size:12px}
+.back{display:none}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:9}
+.modal.open{display:flex}
+.modal form{background:var(--card);border-radius:16px;max-width:480px;width:100%;padding:20px;display:grid;gap:10px;max-height:100%;overflow-y:auto}
+.modal h3{margin:0}.modal label{font-size:12px;font-weight:600;display:grid;gap:4px}
+.modal textarea{width:100%;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font:inherit;color:inherit;resize:vertical}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.empty{padding:32px;text-align:center;color:var(--mut)}
+@media(max-width:860px){
+ aside{width:100%}main{display:none}
+ body.detail aside{display:none}body.detail main{display:flex}
+ .body{grid-template-columns:1fr;overflow-y:auto;display:block}.left{border-right:0}.chat{min-height:420px}
+ .back{display:inline-block}.counters{display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🚛</div>
+  <div><h1>Michael and Friends</h1><small>Vehicle maintenance &amp; ready-reserve staging</small></div>
+  <div class="counters">
+    <div class="chip"><span class="dot" style="background:var(--red)"></span>Broken <b id="c-BROKEN">0</b></div>
+    <div class="chip"><span class="dot" style="background:var(--amb)"></span>In repair <b id="c-IN_REPAIR">0</b></div>
+    <div class="chip"><span class="dot" style="background:var(--grn)"></span>Reserved <b id="c-RESERVED">0</b></div>
+  </div>
+  <button class="btn" id="add">＋ Add unit</button>
+</header>
+<div class="wrap">
+  <aside>
+    <div class="tools">
+      <button class="btn" id="add2" style="width:100%">＋ Add unit</button>
+      <input type="text" id="q" placeholder="Search ID, model, driver, mechanic…">
+      <div class="pills" id="pills"></div>
+    </div>
+    <div class="bar" id="bar"></div>
+    <div id="list"></div>
+  </aside>
+  <main id="detail"></main>
+</div>
+
+<div class="modal" id="modal">
+  <form id="nf">
+    <h3>➕ Add unit</h3>
+    <div class="g2">
+      <label>Unit / body number(s) *<input type="text" id="n-id" placeholder="LDT 300, LDT 301" required></label>
+      <label>Model or ODO<input type="text" id="n-model" placeholder="e.g. ODO 75131"></label>
+    </div>
+    <div class="g2">
+      <label>Driver<input type="text" id="n-driver" placeholder="Marcus Vance"></label>
+      <label>Priority<select id="n-sev"><option>Critical Breakdown</option><option selected>Moderate Issue</option><option>Minor Maintenance</option></select></label>
+    </div>
+    <label>Status<select id="n-status"><option value="BROKEN">Broken – needs repair</option><option value="IN_REPAIR">In repair</option><option value="RESERVED">Ready – in motorpool</option><option value="OPERATIONAL">Ready – operational (out)</option></select></label>
+    <label>Issue description (optional)<textarea id="n-issue" rows="3" placeholder="Hydraulic fluid leak on main boom cylinder…"></textarea></label>
+    <div class="err" id="n-err"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" class="btn ghost" id="cancel">Cancel</button><button class="btn">Add unit</button></div>
+  </form>
+</div>
+
+<script>
+const S={BROKEN:{label:'Broken',color:'var(--red)',icon:'⚠️'},IN_REPAIR:{label:'In repair',color:'var(--amb)',icon:'🔧'},RESERVED:{label:'Reserved (ready)',color:'var(--grn)',icon:'🛡️'}};
+const MECHS=['Unassigned','Michael Castillo'];
+const QA=['Brakes, lights and fluids checked','Road-test completed','Diagnostic codes cleared','Paperwork signed off'];
+const KEY='michael-friends-v1';
+const M=60000,now=Date.now();
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const L=(sender,text,role,ago)=>({sender,text,role,ts:now-ago*M});
+function seed(){return[
+ {id:'TRK-1088',model:'Freightliner Cascadia 2022',driver:'Alex Rivera',status:'BROKEN',severity:'Critical Breakdown',issue:'Brake line pressure loss detected during highway haul. Tow dispatched to Workshop Bay 3.',created:now-10*M,mech:'Unassigned',bay:'N/A',parts:[{n:'Hydraulic line hose',f:false},{n:'DOT 4 brake fluid',f:false}],qa:[],logs:[L('Driver (Alex)','Warning lights on, Highway 9. Lost pressure in rear brakes.','driver',10),L('Dispatch System','Unit flagged BROKEN and added to maintenance backlog.','system',9)]},
+ {id:'TRK-4021',model:'Kenworth T680',driver:'Sarah Jenkins',status:'IN_REPAIR',severity:'Moderate Issue',issue:'Turbocharger lag and high engine temperature alert under heavy load.',created:now-120*M,mech:'Dave Miller',bay:'Bay 02 - Engine Repair',parts:[{n:'Garrett turbo kit',f:true},{n:'Intercooler hose clamp',f:true},{n:'O-ring seal',f:false}],qa:[],logs:[L('Driver (Sarah)','Engine temp spiking to 230°F on inclines.','driver',110),L('Dave Miller','Received in Bay 2. Removed turbo intake hose, found shaft play.','tech',65),L('Dave Miller','Parts ordered from central warehouse. ETA 3:00 PM.','tech',35)]},
+ {id:'TRK-8830',model:'Volvo FH16 Globetrotter',driver:'Carlos Ramirez',status:'RESERVED',severity:'Minor Maintenance',issue:'Alternator replacement and dual battery refresh completed.',created:now-1440*M,mech:'Sam Chen',bay:'Staging Lot B',parts:[{n:'160A alternator',f:true},{n:'Heavy-duty AGM batteries (x2)',f:true}],qa:[0,1,2,3],logs:[L('Driver (Carlos)','Battery warning light after overnight rest.','driver',1400),L('Sam Chen','Swapped alternator, new battery pack. Verified 14.2V charging.','tech',300),L('QA Inspector','Passed inspection. Status RESERVED, ready for route backfill.','system',270)]},
+ {id:'TRK-7712',model:'Peterbilt 579',driver:'David Zhang',status:'BROKEN',severity:'Critical Breakdown',issue:'Transmission slipping in 4th gear under load.',created:now-180*M,mech:'Unassigned',bay:'N/A',parts:[],qa:[],logs:[L('Driver (David)','Hard clunk when upshifting into 4th gear.','driver',180)]},
+ {id:'TRK-9005',model:'Mack Anthem 64T',driver:'Elena Rostova',status:'RESERVED',severity:'Minor Maintenance',issue:'Front steering alignment and tire replacement.',created:now-2880*M,mech:'Mike Ross',bay:'Staging Lot A',parts:[{n:'Bridgestone steer tires (x2)',f:true}],qa:[0,1,2,3],logs:[L('Mike Ross','Alignment corrected within 0.02°. Tires balanced.','tech',1500),L('Fleet Supervisor','Moved to ready-reserve staged inventory.','system',1440)]}
+]}
+function importList(){
+ const D=[['GC 249','',''],['MDTI 105','75131','ALTERNATOR; AIRCON; PMS'],['GCL 185','',''],['MDTS 105','','CHECK UP: BREAKER LEAK, RADIATOR TURBO ENGINE'],['GC 243','',''],['MDTS 106','73326','WATERPUMP. RADIATOR CLEANING. SIGNAL LIGHT'],['FDTL 119','','COMPLETED: 6/11/2026 16:56:00. Still inside the motorpool'],['LDTA 105','','COMPLETED: 06/20/2026 9:41 AM. Inside the motorpool'],['LDT 199','',''],['MDT 139','',''],['LDT 142','',''],['MDTL 101','32941','STARTER. LOW POWER. FR AND RR L/R HANGER PIN/ BUSHING. RADIATOR CLEANING. 2 PCS USED OLD TIRE FRONT'],['LDT 153','',''],['FDTL 112','71725','ENGINE BLOWBY (BREATHER MAUSOK); AIR CLEANER HOUSING FOR REPAIR; SIDE MIRROR BRACKET (R)'],['MDTL 130','','CHECK UP: ENGINE ACCELERATOR'],['LDT 262','71286','BRAKE FOR CHECK UP. CHECK ENGINE'],['DTI 111','',''],['GC 148','177030','LOW POWER, STARTING SYSTEM WIRING (AYAW UMANDAR SA SUSI)'],['LDT 256','87651','CYLINDER HEAD LEAK'],['LDT 204','',''],['LDTA 108','42327','INVOLVE IN ACCIDENT WITH DTIA 126 (CRACK WINDSHIELD, ENGINE COVER, SIDE FENDER (RH))'],['MDTL 157','','CHECK UP ELECTRICAL WIRING. WELDING JOB-FLOORING. CHANGE TIRE. CHECK UP BRAKE LINING.'],['GC 149','',''],['TH 105 / TD 103','',''],['MDTL 158','714541','COOLANT HOSE; DIESEL HOSE RETURN; AUXILLIARY STOPPER (R/H) FOR WELDING; AIR LEAK COMPRESSOR TUBE/ HOSE'],['LDT 156','','CHECK UP: CYLENDER BOOM LEAK, BRAKE LINING, SPRING REAR, RUBBER DUMPER RER'],['MDTL 132','','CHECK ENGINE, MALAKAS USOK BREATHER, LEAK INJECTOR SENSOR, WELDING, BUMUBUGA COOLANT, CHECK BRAKE, CHECK UP AC'],['LDT 244','',''],['ARTA 101','',''],['GCM 130','',''],['GC 197','36678','ENGINE CHECK UP. CLUTCH BOOSTER. CHAMBER AIR LEAK'],['LDT 205','171908','CRAMSHIP BUTAS. CHECK UP POWER STEERING'],['GCL 121','','PROPELLER CROSS JOINT'],['LDT 143','','']];
+ return D.map(([id,odo,issue])=>{const done=issue.startsWith('COMPLETED');return{id,model:odo?'ODO '+odo:'ODO not recorded',driver:'Unassigned',status:done?'RESERVED':'BROKEN',severity:issue?'Moderate Issue':'Not yet assessed',issue:issue||'No fault description listed yet. Needs inspection.',created:Date.now(),mech:'Unassigned',bay:done?'Inside the motorpool':'N/A',parts:[],qa:done?[0,1,2,3]:[],logs:[L('Repair list',issue||'Listed as a broken unit. No fault description yet.','driver',0),L('System Import','Added from the motorpool repair list.','system',0)]}});
+}
+let st={trucks:null,sel:null,filter:'all',q:'',err:'',pick:[]};
+try{const r=JSON.parse(localStorage.getItem(KEY)||'null');if(r&&Array.isArray(r.trucks)&&r.trucks.length)st.trucks=r.trucks}catch(e){}
+if(!st.trucks)st.trucks=importList();
+st.trucks.forEach(t=>{if(!t.hist){t.hist=[];if(t.id==='FDTL 119')t.hist.push({loc:'MOTORPOOL',ts:new Date(2026,5,11,16,56).getTime(),note:'Repair completed'});if(t.id==='LDTA 105')t.hist.push({loc:'MOTORPOOL',ts:new Date(2026,5,20,9,41).getTime(),note:'Repair completed'})}if(!t.loc)t.loc='MOTORPOOL'});
+st.sel=st.trucks[0]?.id||null;
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({trucks:st.trucks}))}catch(e){}};
+const $=id=>document.getElementById(id);
+const get=id=>st.trucks.find(t=>t.id===id);
+function ago(ts){const m=Math.round((Date.now()-ts)/M);if(m<1)return'Just now';if(m<60)return m+' min ago';const h=Math.round(m/60);if(h<24)return h+' hr ago';const d=Math.round(h/24);return d+(d===1?' day ago':' days ago')}
+const clock=ts=>new Date(ts).toLocaleString([], {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+
+function metrics(){for(const k in S)$('c-'+k).textContent=st.trucks.filter(t=>t.status===k).length;
+ $('pills').innerHTML=[['all','All']].concat(Object.keys(S).map(k=>[k,S[k].label.split(' (')[0]])).map(([k,l])=>{const n=k==='all'?st.trucks.length:st.trucks.filter(t=>t.status===k).length;return`<button class="pill ${st.filter===k?'on':''}" data-f="${k}">${l} ${n}</button>`}).join('')}
+
+function renderList(){
+ const q=st.q.toLowerCase();
+ st.pick=st.pick.filter(id=>{const t=get(id);return t&&t.status==='BROKEN'});
+ const n=st.pick.length,bar=$('bar');bar.className='bar on';
+ bar.innerHTML=`<span>${n?n+' selected':'Tick broken units to send to repair'}</span><button class="btn ghost" data-bulk="all">Select all broken</button>${n?'<button class="btn" data-bulk="go">🔧 Move to repair</button><button class="btn ghost" data-bulk="clear">Clear</button>':''}`;
+ const rows=st.trucks.filter(t=>(st.filter==='all'||t.status===st.filter)&&[t.id,t.model,t.driver,t.mech].some(v=>v.toLowerCase().includes(q)));
+ const sc=$('list').scrollTop;$('list').innerHTML=rows.length?rows.map(t=>{const s=S[t.status],last=t.logs.length?t.logs[t.logs.length-1].text:t.issue;
+  return`<div class="item ${t.id===st.sel?'sel':''}" data-id="${esc(t.id)}">${t.status==='BROKEN'?`<input type="checkbox" class="pk" data-pick="${esc(t.id)}" ${st.pick.includes(t.id)?'checked':''}>`:''}<div class="av">🚚<i style="background:${s.color}"></i></div><div class="m"><div class="top"><b>${esc(t.id)}</b><span class="mut">${ago(t.created)}</span></div><p><b style="font-weight:600">${esc(t.model)}</b></p><p>💬 ${esc(last)}</p><span class="tag" style="background:${s.color}">${s.icon} ${s.label}${t.status==='RESERVED'?(t.loc==='OPERATIONAL'?' · Operational':' · In motorpool'):''}</span></div></div>`}).join(''):'<div class="empty">No matching trucks found</div>';$('list').scrollTop=sc;
+}
+
+function banner(t){
+ const s=S[t.status];let sub,btn='';
+ if(t.status==='BROKEN'){sub='Waiting in maintenance queue for workshop assignment';btn=`<button data-act="to" data-to="IN_REPAIR">🔧 Start repair</button>`}
+ else if(t.status==='IN_REPAIR'){const ok=canQA(t);sub=`Mechanic working in ${esc(t.bay)}`;btn=`<button data-act="to" data-to="RESERVED" ${ok?'':'disabled title="Complete the QA checklist and fulfil all parts first"'}>✅ Pass QA &amp; stage</button>`}
+ else{sub='Repaired, inspected and ready for deployment';btn=`<button data-act="to" data-to="BROKEN">↩ Flag new incident</button>`}
+ return`<div class="banner" style="background:${s.color}"><div><b>${s.icon} STATUS: ${s.label.toUpperCase()}</b><small>${sub}</small></div>${btn}</div>`;
+}
+const canQA=t=>t.qa.length===QA.length&&t.parts.every(p=>p.f);
+
+function deployBox(t){
+ if(t.status!=='RESERVED')return'';
+ const op=t.loc==='OPERATIONAL',h=(t.hist||[]).slice().sort((a,b)=>b.ts-a.ts);
+ const dv=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);
+ return`<div class="box"><h4>🚀 Deployment</h4>
+  <div class="row"><span>Current location</span><span class="badge" style="background:${op?'var(--blue)':'var(--grn)'};cursor:default">${op?'Operational (out)':'In motorpool'}</span></div>
+  <label class="mut" style="display:grid;gap:4px;margin-bottom:8px">Date &amp; time<input type="datetime-local" id="dt" value="${dv}"></label>
+  <button class="btn" data-act="loc" data-to="${op?'MOTORPOOL':'OPERATIONAL'}">${op?'🏠 Back to motorpool':'🚀 Mark operational'}</button>
+  <h4 style="margin-top:12px">History</h4>
+  ${h.length?h.map(x=>`<div class="row"><span>${x.loc==='OPERATIONAL'?'🚀 Operational':'🏠 In motorpool'}${x.note?`<span class="mut"> · ${esc(x.note)}</span>`:''}</span><span class="mut">${clock(x.ts)}</span></div>`).join(''):'<div class="mut">No history yet.</div>'}</div>`;
+}
+function renderDetail(){
+ const t=get(st.sel);
+ if(!t){$('detail').innerHTML='<div class="empty" style="margin:auto"><div style="font-size:44px">🚛</div><h3>No truck selected</h3><p>Select a vehicle to view logs and change repair state.</p></div>';return}
+ const stream=document.getElementById('stream'),keep=stream&&stream.dataset.id===t.id?stream.scrollTop:null;
+ $('detail').innerHTML=`${banner(t)}
+ <div class="head"><div><button class="btn ghost back" data-act="back">‹ Fleet</button>
+  <h2>${esc(t.id)} <span class="mut" style="font-weight:600">${esc(t.model)}</span></h2>
+  <div class="mut">Driver: <b>${esc(t.driver)}</b> • Priority: ${esc(t.severity)}</div></div>
+  <div class="metas"><div class="meta"><span>Assigned mechanic</span><select id="mech">${MECHS.map(m=>`<option ${m===t.mech?'selected':''}>${m}</option>`).join('')}</select></div>
+  <div class="meta"><span>Repair location / bay</span><b>${esc(t.bay)}</b></div></div></div>
+ <div class="body"><div class="left">
+  <div class="box"><h4>ℹ️ Primary failure report</h4>${esc(t.issue)}</div>
+  <div class="box"><h4>📦 Parts &amp; material requisitions</h4>
+   ${t.parts.length?t.parts.map((p,i)=>`<div class="row"><span>⚙️ ${esc(p.n)}</span><button class="badge" data-act="part" data-i="${i}" style="background:${p.f?'var(--grn)':'var(--amb)'}" title="Click to toggle">${p.f?'Fulfilled':'Requested'}</button></div>`).join(''):'<div class="mut" style="text-align:center;padding:6px"><i>No repair parts requested yet.</i></div>'}
+   <form class="addp" id="pf"><input type="text" id="pn" placeholder="Add part name / spec" required><button class="btn">Add</button></form></div>
+  <div class="box"><h4>✔ QA checklist</h4>
+   ${QA.map((q,i)=>`<label class="chk"><input type="checkbox" data-act="qa" data-i="${i}" ${t.qa.includes(i)?'checked':''} ${t.status==='IN_REPAIR'?'':'disabled'}> ${q}</label>`).join('')}
+   <div class="mut" style="margin-top:6px">Required before a truck can be staged as Reserved, along with all parts fulfilled.</div>
+   ${st.err?`<div class="err">${esc(st.err)}</div>`:''}</div>
+  ${deployBox(t)}
+ </div>
+ <div class="chat"><div class="hd"><span>💬 Technician &amp; diagnostic feed</span><span class="mut">${t.logs.length} updates</span></div>
+  <div id="stream" data-id="${esc(t.id)}">${t.logs.map(l=>l.role==='system'?`<div class="sys">⚙️ ${esc(l.sender)}: ${esc(l.text)}</div>`:`<div class="msg ${l.role==='tech'?'tech':''}"><div class="who"><b>${esc(l.sender)}</b><span>${clock(l.ts)}</span></div><div class="bub">${esc(l.text)}</div></div>`).join('')}</div>
+  <form class="send" id="lf"><input type="text" id="lt" placeholder="Type mechanic update or diagnostic note…" required><button class="btn">Send</button></form></div></div>`;
+ const s2=$('stream');s2.scrollTop=keep??s2.scrollHeight;
+}
+function renderAll(){metrics();renderList();renderDetail();document.body.classList.toggle('detail',!!st.mobile)}
+
+function log(t,sender,text,role){t.logs.push({sender,text,role,ts:Date.now()})}
+function move(t,to){
+ st.err='';
+ if(t.status==='BROKEN'&&to==='RESERVED'){st.err='A broken truck must go through repair and QA first.';return}
+ if(to==='RESERVED'&&!canQA(t)){st.err='Finish the QA checklist and fulfil all parts before staging.';return}
+ const from=t.status;t.status=to;
+ if(to==='IN_REPAIR'){if(t.mech==='Unassigned')t.mech='Michael Castillo';if(t.bay==='N/A'||t.bay.startsWith('Staging'))t.bay='Bay 01 - Active Maintenance'}
+ if(to==='RESERVED'){t.bay='Staging Lot A (Ready)';t.loc='MOTORPOOL';(t.hist=t.hist||[]).push({loc:'MOTORPOOL',ts:Date.now(),note:'Repair completed, staged in motorpool'})}
+ if(to==='BROKEN'){t.qa=[];t.bay='N/A'}
+ log(t,'System Lifecycle Engine',`State changed: ${S[from].label} → ${S[to].label}`,'system');
+}
+
+document.addEventListener('click',e=>{
+ const pk=e.target.closest('[data-pick]');
+ if(pk){const id=pk.dataset.pick;st.pick=pk.checked?[...new Set([...st.pick,id])]:st.pick.filter(x=>x!==id);renderList();return}
+ const bk=e.target.closest('[data-bulk]');
+ if(bk){const b=bk.dataset.bulk,qq=st.q.toLowerCase();
+  if(b==='all')st.pick=st.trucks.filter(t=>t.status==='BROKEN'&&[t.id,t.model,t.driver,t.mech].some(v=>v.toLowerCase().includes(qq))).map(t=>t.id);
+  if(b==='clear')st.pick=[];
+  if(b==='go'){st.pick.forEach(id=>{const t=get(id);if(t)move(t,'IN_REPAIR')});st.pick=[];save();renderAll();return}
+  renderList();return}
+ const pill=e.target.closest('[data-f]');if(pill){st.filter=pill.dataset.f;metrics();renderList();return}
+ const it=e.target.closest('.item');if(it){st.sel=it.dataset.id;st.err='';st.mobile=true;renderAll();return}
+ const a=e.target.closest('[data-act]');if(!a)return;
+ const t=get(st.sel);if(!t)return;
+ if(a.dataset.act==='back'){st.mobile=false;renderAll();return}
+ if(a.dataset.act==='to'){move(t,a.dataset.to)}
+ if(a.dataset.act==='loc'){const v=$('dt').value,ts=v?new Date(v).getTime():NaN,when=isNaN(ts)?Date.now():ts;t.loc=a.dataset.to;(t.hist=t.hist||[]).push({loc:t.loc,ts:when});log(t,'System Lifecycle Engine',t.loc==='OPERATIONAL'?'Marked operational (out of motorpool)':'Returned to motorpool','system');t.logs[t.logs.length-1].ts=when;st.err=''}
+ if(a.dataset.act==='part'){const p=t.parts[+a.dataset.i];p.f=!p.f;st.err=''}
+ if(a.dataset.act==='qa'){const i=+a.dataset.i;t.qa=a.checked?[...new Set([...t.qa,i])]:t.qa.filter(x=>x!==i);st.err=''}
+ save();renderAll();
+});
+document.addEventListener('change',e=>{if(e.target.id==='mech'){const t=get(st.sel);if(t&&t.mech!==e.target.value){t.mech=e.target.value;log(t,'System Lifecycle Engine',`Assigned to ${t.mech}`,'system');save();renderAll()}}});
+document.addEventListener('submit',e=>{
+ const t=get(st.sel);
+ if(e.target.id==='pf'){e.preventDefault();const v=$('pn').value.trim();if(v&&t){t.parts.push({n:v,f:false});log(t,'System Lifecycle Engine',`Part requested: ${v}`,'system');save();renderAll()}}
+ if(e.target.id==='lf'){e.preventDefault();const v=$('lt').value.trim();if(v&&t){log(t,t.mech!=='Unassigned'?t.mech:'Lead Mechanic',v,'tech');save();renderAll()}}
+});
+$('q').addEventListener('input',e=>{st.q=e.target.value.trim();renderList()});
+const modal=$('modal');
+$('add').onclick=$('add2').onclick=()=>{$('n-err').textContent='';modal.classList.add('open')};
+$('cancel').onclick=()=>modal.classList.remove('open');
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
+$('nf').addEventListener('submit',e=>{
+ e.preventDefault();
+ const ids=[...new Set($('n-id').value.toUpperCase().split(/[,\n]/).map(s=>s.trim()).filter(Boolean))],id=ids[0]||'',driver=$('n-driver').value.trim()||'Unassigned',issue=$('n-issue').value.trim();
+ if(!ids.length)return;const dup=ids.find(x=>get(x));if(dup){$('n-err').textContent=`Unit ${dup} already exists in the fleet.`;return}
+ const sv=$('n-status').value;ids.slice().reverse().forEach(id=>{const status=sv==='OPERATIONAL'?'RESERVED':sv,now2=Date.now();
+ const t={id,model:$('n-model').value.trim()||'ODO not recorded',driver,status,severity:issue?$('n-sev').value:'Not yet assessed',issue:issue||(status==='BROKEN'?'No fault description listed yet. Needs inspection.':'Added to the team.'),created:now2,mech:status==='IN_REPAIR'?'Michael Castillo':'Unassigned',bay:status==='IN_REPAIR'?'Bay 01 - Active Maintenance':(status==='RESERVED'&&sv!=='OPERATIONAL')?'Inside the motorpool':'N/A',parts:[],qa:status==='RESERVED'?[0,1,2,3]:[],loc:sv==='OPERATIONAL'?'OPERATIONAL':'MOTORPOOL',hist:[],logs:[L('System Import','Unit added to the team as '+S[status].label+'.','system',0)]};
+ if(issue)t.logs.unshift(L(`Driver (${driver})`,issue,'driver',0));
+ if(status==='RESERVED')t.hist.push({loc:t.loc,ts:now2,note:'Unit added'});
+ st.trucks.unshift(t)});
+ st.sel=id;st.filter='all';st.mobile=true;e.target.reset();modal.classList.remove('open');save();renderAll();
+});
+renderAll();
+setInterval(renderList,60000);
+</script>
+</body>
+</html>
